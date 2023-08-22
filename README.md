@@ -1,26 +1,12 @@
-# Umbral's scholar projects
----
+# Umbral's scripts for school.
+## Español
+Los pequeños retazos de código aquí presentes o bien fueron tareas para la
+asignatura de programación, o bien fueron escritos como preparación para las
+primeras. Si bien la calidad los susodichos es, en el mejor de los casos,
+cuestionable, espero que puedan resultarle útiles a alguien más.
 
-## English:
-The quality of the programs
-is not that great
-(matter of fact,
-i think most of them
-are poorly written).
-Regardless,
-i put them here
-for anyone
-who might find them useful.
-
-* My english is not very good,
-sorry about that.
-
-## Español:
-La calidad de los programas
-no es muy buena
-(de hecho, creo que 
-la mayoría están
-muy mal escritos).
-De todos modos,
-los pongo aquí para cualquiera
-que los encuentre útiles.
+## English
+The small snippets of code here were either assignments for the programming
+course, or were written in preparation for the former. While the quality of
+the above is questionable at best, I hope they may be useful to somebody
+else.
