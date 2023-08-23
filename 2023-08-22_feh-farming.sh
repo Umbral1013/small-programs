@@ -138,6 +138,7 @@ while [ $COUNTER -lt 100 ]; do
         sunday
     else
         echo "ERROR: Opción inesperada."
+        exit 1;
     fi
 
     # Es lo mismo que 'COUNTER = $COUNTER + 1'
