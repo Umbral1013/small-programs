@@ -1,4 +1,5 @@
-/* TÍTULO DEL DOCUMENTO: Raíces cuadradas resueltas con el algoritmo
+/*
+ * TÍTULO DEL DOCUMENTO: Raíces cuadradas resueltas con el algoritmo
  * babilónico.
  * NOMBRE DEL ARCHIVO: raices-babilonicas.c
  * AUTOR: Umbral1013.
@@ -11,32 +12,24 @@
  */
 
 #include "stdio.h"
-#include "stdlib.h"
 
 int main() {
-    /* VARIABLES
-     * b: Base del rectángulo hipotético.
-     * h: Altura del rectángulo hipotético.
-     * x: Número al que se le quiere sacar raíz.
-     */
-    int b, h, x;
+    	int base, altura, x;
 
-    printf("ALGORITMO BABILÓNICO PARA LAS RAÍCES CUADRADAS \n");
-    printf("NOTA : Es mejor probar con números pequeños. \n");
-    printf("------------------------------------------ \n");
-    printf("Inserta el numero al que le quieres sacar raiz : ");
-    scanf("%d", &x);
+    	printf("ALGORITMO BABILONICO (RAICES CUADRADAS)\n");
+    	printf("Teclea el numero al que le quieres sacar raiz : ");
+    	scanf("%d", &x);
 
-    b = x / 2;
-    h = 2;
+    	base = x / 2;
+    	altura = 2;
 
-    // Intentamos aproximar a b a la raíz cuadrada real.
-    while (b != h)
-    {
-        b = (h + b) / 2;
-        h = x / b;
-    }
+    	// Intentamos aproximar a b a la raíz cuadrada real.
+    	while (base != altura) {
+        	base = (base + altura) / 2;
+        	altura = x / base;
+    	}
 
-    printf("La raíz cuadrada es : %d \n", b);
-    return (0);
+    	printf("La raíz cuadrada de %d es: %d", x, base);
+    	printf("\n");
+    	return 0;
 }
