@@ -3,7 +3,7 @@ MODULE Espirales; (* Umbral1013 2024/04/08 *)
   IMPORT Texts, Oberon;
   VAR W: Texts.Writer;
 
-  PROCEDURE Generar*;
+  PROCEDURE Generar(VAR N: INTEGER);
     CONST linea = "X";
       espacio = " ";
     VAR N: INTEGER;
