@@ -16,9 +16,6 @@ MODULE Espirales; (* Umbral1013 2024/04/08 *)
       v: INTEGER;
       d: INTEGER;
   BEGIN
-    (* Seria mejor tomarlo como parametro, pero aun no se como hacer eso. *)
-    N := 17;
-
     FOR x := 0 TO N-1 DO
       FOR y := 0 TO N-1 DO
         (* Reflejo (x,y) en el cuadrante superior izquierdo como (a,b) *)
