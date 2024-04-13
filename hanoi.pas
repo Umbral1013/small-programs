@@ -24,6 +24,8 @@ BEGIN
   Hanoi := res; (* Return *)
 END;
 
+CONST minDiscos = 1;
+  maxDiscos = 31;
 VAR discos: Integer;
   movimientos: LongInt;
 BEGIN (* Main *)
@@ -31,7 +33,7 @@ BEGIN (* Main *)
   Write('Teclea el numero de discos: ');
   Readln(discos);
 
-  WHILE (discos < 1) OR (discos > 30) DO
+  WHILE (discos < minDiscos) OR (discos > maxDiscos) DO
   BEGIN
       Writeln('Teclea un numero de discos valido.');
       Readln(discos);
