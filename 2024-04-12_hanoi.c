@@ -39,7 +39,8 @@ int main(void)
     }
     
     movimientos = hanoi(discos);
-    printf("Para %d discos se tienen que hacer %d movimientos.\n", discos, movimientos);
+    printf("Para %d discos se tienen que hacer %d movimientos.\n",
+        discos, movimientos);
 
     return 0;
 }
