@@ -18,7 +18,7 @@ MODULE Hanoi;
   PROCEDURE Hanoi(a: INTEGER): INTEGER;
     VAR res: INTEGER;
   BEGIN res := 0;
-	IF a = 1 THEN res := 1 ELSE res := 2*Hanoi(a-1) + 1 END;
+    IF a = 1 THEN res := 1 ELSE res := 2*Hanoi(a-1) + 1 END;
     RETURN res
   END Hanoi ;
 
