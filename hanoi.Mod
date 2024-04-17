@@ -37,4 +37,4 @@ MODULE Hanoi;
   END Go ;
 
 BEGIN Texts.OpenWriter(W)
-END Hano
+END Hanoi.
