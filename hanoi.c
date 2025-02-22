@@ -1,6 +1,6 @@
 /*
  * TITULO DEL DOCUMENTO: Torre de Hanoi.
- * NOMBRE DEL ARCHIVO: 2024-04-12_hanoi.c
+ * NOMBRE DEL ARCHIVO: hanoi.c
  * AUTOR: Umbral1013.
  * PROPOSITO: Calcula el numero minimo de movimientos necesarios
  * para resolver la torre de Hanoi con X discos (1 <= X <= 30).
