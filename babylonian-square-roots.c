@@ -1,7 +1,7 @@
 /*
  * TÍTULO DEL DOCUMENTO: Raíces cuadradas resueltas con el algoritmo
  * babilónico.
- * NOMBRE DEL ARCHIVO: raices-babilonicas.c
+ * NOMBRE DEL ARCHIVO: babylonian-square-roots.c
  * AUTOR: Umbral1013.
  * PROPÓSITO: Encontrar la raíz cuadrada de un número usando el método
  * babilónico.
