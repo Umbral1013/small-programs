@@ -1,6 +1,6 @@
 /*
  * TÍTULO DEL DOCUMENTO: Pirámide.
- * NOMBRE DEL ARCHIVO: piramide.c
+ * NOMBRE DEL ARCHIVO: pyramid.c
  * AUTOR: Umbral1013.
  * PROPÓSITO: Dibujar una 'pirámide' en la pantalla dada la magnitud de la
  * base en caracteres.
