@@ -3,34 +3,37 @@ MODULE NumericalMethods;
 
 IMPORT Out, Math;
 
+PROCEDURE Function(x: REAL): REAL;
+BEGIN
+	RETURN -23.33 + 79.35*x -88.09*Math.power(x, 2.0)
+		+ 41.6*Math.power(x, 3.0) -8.68*Math.power(x, 4.0)
+		+ 0.658*Math.power(x, 5.0)
+END Function;
+
 PROCEDURE Bisection*;
 CONST
-	PAD = 2;
-	ZEROPAD = 4;
-	ERROR = 0.001;
+	PAD = 2; ZEROPAD = 4;
+	DESIRED_ERROR = 1.0;
 VAR
 	(* fc is meant to be read as 'f of c'. *)
-	a, b, c, fc, oldC, percentageError: REAL;
+	a, b, c, fc, oldC, aproximationError: REAL;
 	i: INTEGER;
 BEGIN
-	a := -2.0;	b := 3.0;	c := 0.0;
-	fc := 0.0;	oldC := 0.0;	percentageError := 0.0;
+	a := 4.5; b := 5.0; c := (a + b) / 2.0;
+	fc := Function(c); aproximationError := 100.0;
 
 	i := 0;
-	REPEAT
+	WHILE ( (aproximationError >= DESIRED_ERROR) & (fc # 0.0) ) DO
 		(* We show results. *)
 		Out.String("Iteration: "); Out.Int(i, PAD); Out.Ln;
 		Out.String("a: "); Out.Real(a, ZEROPAD); Out.Ln;
 		Out.String("b: "); Out.Real(b, ZEROPAD); Out.Ln;
 		Out.String("c: "); Out.Real(c, ZEROPAD); Out.Ln;
 		Out.String("f(c): "); Out.Real(fc, ZEROPAD); Out.Ln;
-		Out.String("Percentage error: ");
-		Out.Real(percentageError, ZEROPAD); Out.String("%"); Out.Ln;
+		Out.String("Aproximation error: ");
+		Out.Real(aproximationError, ZEROPAD); Out.String("%"); Out.Ln;
 
-		(* This was quite a long function, so I had to break it up. *)
-		fc := -26.0 + 82.3*c - 88.0*Math.power(c, 2.0);
-		fc := fc + 45.4*Math.power(c, 3.0) - 9.0*Math.power(c, 4.0);
-		fc := fc + 0.65*Math.power(c, 5.0);
+		fc := Function(c);
 
 		(* If f(c) is zero, it means we have found the root. *)
 		IF fc > 0.0 THEN b := c
@@ -38,12 +41,11 @@ BEGIN
 
 		oldC := c;
 		c := (a + b) / 2.0;
-		percentageError := ABS( (c - oldC) / c) * 100.0;
+		aproximationError := ABS( (c - oldC) / c) * 100.0;
 
 		INC(i);
-	UNTIL (percentageError < ERROR) OR (fc = 0.0);
+	END;
 END Bisection;
 
-BEGIN
-	Bisection;
+BEGIN Bisection
 END NumericalMethods.
