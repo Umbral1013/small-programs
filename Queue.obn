@@ -1,0 +1,87 @@
+(* Umbral1013, 2025/02/19 *)
+MODULE Queue;
+
+CONST QUEUESIZE = 1024;
+
+TYPE Element* = POINTER TO ElementDesc;
+	ElementDesc = RECORD END;
+
+	CharElement* = POINTER TO CharElementDesc;
+	CharElementDesc = RECORD (ElementDesc)
+		ch*: CHAR
+	END;
+
+	Queue* = POINTER TO QueueDesc;
+	QueueDesc = RECORD
+		(* Private *)
+		Data: ARRAY QUEUESIZE OF Element;
+		FrontPosition: INTEGER;
+		EndPosition: INTEGER;
+		(* Public *)
+		IsEmpty*: PROCEDURE (q: Queue): BOOLEAN;
+		IsFull*: PROCEDURE (q: Queue): BOOLEAN;
+		Enqueue*: PROCEDURE (q: Queue; e: Element);
+		Dequeue*: PROCEDURE (q: Queue): Element;
+		GetFront*: PROCEDURE (q: Queue): Element;
+		CopyAll*: PROCEDURE (q, r: Queue)
+	END;
+
+PROCEDURE IsEmpty(q: Queue): BOOLEAN;
+BEGIN
+	RETURN ( (q.FrontPosition = 0) & (q.EndPosition = QUEUESIZE-1) )
+		OR (q.FrontPosition = q.EndPosition+1)
+END IsEmpty;
+
+PROCEDURE IsFull(q: Queue): BOOLEAN;
+BEGIN
+	RETURN (q.FrontPosition = q.EndPosition+2)
+		OR ( (q.FrontPosition = 0) & (q.EndPosition = QUEUESIZE-2) )
+		OR ( (q.FrontPosition = 1) & (q.EndPosition = QUEUESIZE-1) )
+END IsFull;
+
+PROCEDURE Enqueue(q: Queue; e: Element);
+BEGIN ASSERT( ~q.IsFull(q) );
+	INC(q.EndPosition);
+	IF q.EndPosition = QUEUESIZE THEN q.EndPosition := 0 END;
+	q.Data[q.EndPosition] := e;
+END Enqueue;
+
+PROCEDURE Dequeue(q: Queue): Element;
+VAR result: Element;
+BEGIN ASSERT( ~q.IsEmpty(q) );
+	result := q.Data[q.FrontPosition];
+	INC(q.FrontPosition);
+	IF q.FrontPosition = QUEUESIZE THEN q.FrontPosition := 0 END;
+RETURN result END Dequeue;
+
+PROCEDURE GetFront(q: Queue): Element;
+VAR result: Element;
+BEGIN ASSERT( ~q.IsEmpty(q) );
+	result := q.Data[q.FrontPosition];
+RETURN result END GetFront;
+
+PROCEDURE CopyAll(q, r: Queue);
+VAR i: INTEGER;
+BEGIN
+	r.FrontPosition := q.FrontPosition;
+	r.EndPosition := q.EndPosition;
+	IF ~q.IsEmpty(q) THEN
+		i := q.FrontPosition;
+		REPEAT
+			r.Data[i] := q.Data[i];
+			i := (i + 1) MOD QUEUESIZE;
+		UNTIL (i = r.EndPosition+1);
+	END;
+END CopyAll;
+
+PROCEDURE Init*(q: Queue);
+BEGIN q.FrontPosition := 0; q.EndPosition := -1;
+	q.IsEmpty := IsEmpty;
+	q.IsFull := IsFull;
+	q.Enqueue := Enqueue;
+	q.Dequeue := Dequeue;
+	q.GetFront := GetFront;
+	q.CopyAll := CopyAll
+END Init;
+
+END Queue.

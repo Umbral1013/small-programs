@@ -1,0 +1,66 @@
+(* Umbral1013, 2025/02/20 *)
+MODULE Stack;
+
+CONST STACKSIZE = 1024;
+
+TYPE  Element* = POINTER TO ElementDesc;
+	ElementDesc = RECORD END;
+	CharElement* = POINTER TO CharElementDesc;
+	CharElementDesc = RECORD (ElementDesc)
+		ch*: CHAR
+	END;
+
+	Stack* = POINTER TO StackDesc;
+	StackDesc = RECORD
+		(* Private *)
+		Data: ARRAY STACKSIZE OF Element;
+		Top: INTEGER;
+		(* Public *)
+		IsFull*: PROCEDURE (s: Stack): BOOLEAN;
+		IsEmpty*: PROCEDURE (s: Stack): BOOLEAN;
+		GetTop*: PROCEDURE (s: Stack): Element;
+		Push*: PROCEDURE (s: Stack; e: Element);
+		Pop*: PROCEDURE (s: Stack): Element;
+		CopyAll*: PROCEDURE (s, t: Stack)
+	END;
+
+PROCEDURE IsFull(s: Stack): BOOLEAN; BEGIN RETURN s.Top = STACKSIZE END IsFull;
+
+PROCEDURE IsEmpty(s: Stack): BOOLEAN; BEGIN RETURN s.Top = -1 END IsEmpty;
+
+PROCEDURE GetTop(s: Stack): Element;
+BEGIN ASSERT( ~s.IsEmpty(s) );
+RETURN s.Data[s.Top] END GetTop;
+
+PROCEDURE Push(s: Stack; e: Element);
+BEGIN ASSERT( ~s.IsFull(s) );
+	INC(s.Top); s.Data[s.Top] := e
+END Push;
+
+PROCEDURE Pop(s: Stack): Element;
+VAR result: Element;
+BEGIN ASSERT( ~s.IsEmpty(s) );
+	result := s.Data[s.Top]; DEC(s.Top);
+RETURN result END Pop;
+
+PROCEDURE CopyAll(s, t: Stack);
+VAR i: INTEGER;
+BEGIN
+	t.Top := s.Top; i := 0;
+	WHILE i <= s.Top DO
+		t.Data[i] := s.Data[i];
+		INC(i)
+	END
+END CopyAll;
+
+PROCEDURE Init*(s: Stack);
+BEGIN s.Top := -1;
+	s.IsFull := IsFull;
+	s.IsEmpty := IsEmpty;
+	s.GetTop := GetTop;
+	s.Push := Push;
+	s.Pop := Pop;
+	s.CopyAll := CopyAll
+END Init;
+
+END Stack.

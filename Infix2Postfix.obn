@@ -1,0 +1,43 @@
+(* Umbral1013, 2025/02/21 *)
+MODULE Infix2Postfix;
+
+IMPORT Queue, Expression, Out;
+
+PROCEDURE String2Queue(s: ARRAY OF CHAR; q: Queue.Queue);
+VAR i: INTEGER;
+	charElem: Queue.CharElement;
+BEGIN i := 0;
+	WHILE s[i] # 0X DO
+		NEW(charElem); charElem.ch := s[i];
+		q.Enqueue(q, charElem);
+		INC(i)
+	END
+END String2Queue;
+
+(* This prints the queue while emptying it *)
+PROCEDURE DumpQueue(q: Queue.Queue);
+VAR elem: Queue.Element;
+BEGIN
+	WHILE ~q.IsEmpty(q) DO
+		NEW(elem); elem := q.Dequeue(q);
+		Out.Char( elem(Queue.CharElement).ch );
+	END;
+	Out.Ln
+END DumpQueue;
+
+PROCEDURE Do*;
+CONST myString = "((((((a+b)*c)-d)^e)/f)+g)*h";
+VAR myExpression: Expression.Expression;
+	charQueue: Queue.Queue;
+BEGIN
+	NEW(myExpression); Expression.Init(myExpression);
+	NEW(charQueue); Queue.Init(charQueue);
+	String2Queue(myString, charQueue);
+	myExpression.SetExpression(myExpression, charQueue);
+	myExpression.ToPostfix(myExpression);
+	charQueue := myExpression.GetPostfixExpression(myExpression);
+	DumpQueue(charQueue);
+END Do;
+
+BEGIN Do
+END Infix2Postfix.
