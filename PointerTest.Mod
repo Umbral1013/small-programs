@@ -48,7 +48,7 @@ BEGIN
 	END;
 	*)
 
-	(* Some shady stuff going on starting from here. *)
+	(* Some shady stuff going on in here. *)
 	NEW(intElem); intElem.data := 5;				(* Element of another type. *)
 	list[26] := intElem;						(* Adding it to the array. *)
 
