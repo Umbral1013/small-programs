@@ -12,8 +12,6 @@ NOTAS:
   - A 31/08/2024 12:13 p.m. Debo decir que ya funciona como deberia, pero no me
   convence. Quiza seria bueno dejarlo asi, por lo sano.
   - A 01/09/2024, 20:05:06, puedo confirmar que si ingresas letras ya no truena.
-  - Esta revisión (2025/10/20) se hizo para ver qué tanto he avanzado.
-  La verdad: no mucho.
 }
 
 program doolittle;
@@ -26,7 +24,6 @@ const
 
 type
   TMatriz = array [1..N] of array [1..N] of double;
-  TMatriz2x2 = array [1..2] of array [1..2] of double;
   TVector = array [1..N] of double;
 
   procedure iniciarL(var L: TMatriz);
@@ -104,14 +101,13 @@ type
           L[k, j] := eliminar;
           Inc(k);
         end;
-        // Conseguimos el pivote y la fila en la que está ubicado.
-        if (i = j) and (U[i, j] <> 0) then
+        if i = j then
+          // Conseguimos el pivote y la fila en la que está ubicado.
         begin
           pivote := U[i, j];
           iPivote := i;
         end
-        else
-          break;
+        else if pivote = 0 then exit;
       end;
     end;
   end;
@@ -136,20 +132,19 @@ type
     Result := det;
   end;
 
-  function determinante2x2(A: TMatriz2x2): double;
+  function determinante2x2(A: TMatriz): double;
     { Manera sencilla de calcular el determinante de una matriz cuadrada 2*2. }
   begin
     Result := A[1, 1] * A[2, 2] - A[1, 2] * A[2, 1];
   end;
 
-  function submatriz(A: TMatriz; fila, col: integer): TMatriz2x2;
+  function submatriz(A: TMatriz; fila, col: integer): TMatriz;
   { Genera matrices de 2*2, adecuadas para la obtención de una matriz de
-  cofactores (o adjunta). Es una de las pocas cosas que no escalaría bien.
-  Recibe la matriz, la fila, y la columna en la que está el elemento del que
-  queremos obtener el cofactor.
+  cofactores (o adjunta). Recibe la matriz, la fila, y la columna en la que está
+  el elemento del que queremos obtener el cofactor.
   }
   var
-    submatriz_: TMatriz2x2;
+    submatriz_: TMatriz;
     i, j, iSub, jSub: integer;
   begin
     iSub := 1;
@@ -161,8 +156,8 @@ type
         if (i <> fila) and (j <> col) then
         begin
           // Ajustamos los índices para evitar escribir en espacios
-          // de memoria que no deberíamos. Solución fea.
-          if jSub > High(submatriz_[iSub]) then
+          // de memoria que no deberíamos.
+          if jSub > N-1 then
           begin
             jSub := 1;
             Inc(iSub);
@@ -196,8 +191,7 @@ type
   { Matriz adjunta (o de cofactores). Toma una matriz, y devuelve la matriz de
   cofactores. Sirve para invertir una matriz. }
   var
-    cofactores: TMatriz;
-    submatriz_: TMatriz2x2;
+    cofactores, submatriz_: TMatriz;
     i, j, signo: integer;
   begin
     signo := -1;
@@ -263,7 +257,7 @@ type
     { Multiplica dos matrices, y da como resultado una tercera matriz. }
   var
     i, j, k: integer;
-    suma: real;
+    suma: double;
     producto: TMatriz;
   begin
     // Via: https://en.wikipedia.org/wiki/Matrix_multiplication_algorithm
@@ -340,8 +334,7 @@ type
       invL := matrizInversa(L, determinanteL);
       invU := matrizInversa(U, determinante_);
       x := solucion(c, invL, invU, b);
-      WriteLn('Comprobamos que LU = A.');
-      WriteLn('A | x (solución)');
+      WriteLn('Comprobemos que LU = A.');
       mostrarSistema(A, x);
     end
     else
@@ -359,8 +352,7 @@ var
   salir: boolean;
 begin { Main }
   salir := False;
-  WriteLn('Doolittle, versión 2.0');
   WriteLn('Este programa soluciona sistemas de ecuaciones. Bienvenido.');
   while not salir do principal(salir);
-  WriteLn('¡Hasta pronto!');
+  WriteLn('Hasta pronto!');
 end. { Main }
