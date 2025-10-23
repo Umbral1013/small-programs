@@ -1,5 +1,5 @@
 { Nombre del programador: Umbral1013.
-Fecha: 2025/10/19.
+Fecha: 2025/10/22.
 Nombre del programa: Doolittle (revisión).
 Descripcion del programa: Factorizacion y solucion de matrices por el
   metodo de Doolittle.
@@ -12,6 +12,7 @@ NOTAS:
   - A 31/08/2024 12:13 p.m. Debo decir que ya funciona como deberia, pero no me
   convence. Quiza seria bueno dejarlo asi, por lo sano.
   - A 01/09/2024, 20:05:06, puedo confirmar que si ingresas letras ya no truena.
+  - Esto debería compilarse con -Mfpc (modo de FreePascal).
 }
 
 program doolittle;
@@ -25,6 +26,29 @@ const
 type
   TMatriz = array [1..N] of array [1..N] of double;
   TVector = array [1..N] of double;
+
+  procedure iniciarVector(var b: TVector);
+  { Inicializa el vector en ceros. }
+  var
+    i: integer;
+  begin
+    for i := 1 to N do
+      b[i] := 0;
+  end;
+
+  procedure iniciarMatriz(var A: TMatriz);
+  { Inicializa la matriz en ceros. }
+  var
+    i, j: integer;
+  begin
+    for i := 1 to N do
+    begin
+      for j := 1 to N do
+      begin
+        A[i, j] := 0;
+      end;
+    end;
+  end;
 
   procedure iniciarL(var L: TMatriz);
   { Inicializa la matriz triangular inferior. }
@@ -129,13 +153,13 @@ type
         if i = j then det := det * U[i, j];
       end;
     end;
-    Result := det;
+    determinante := det;
   end;
 
   function determinante2x2(A: TMatriz): double;
     { Manera sencilla de calcular el determinante de una matriz cuadrada 2*2. }
   begin
-    Result := A[1, 1] * A[2, 2] - A[1, 2] * A[2, 1];
+    determinante2x2 := A[1, 1] * A[2, 2] - A[1, 2] * A[2, 1];
   end;
 
   function submatriz(A: TMatriz; fila, col: integer): TMatriz;
@@ -157,7 +181,7 @@ type
         begin
           // Ajustamos los índices para evitar escribir en espacios
           // de memoria que no deberíamos.
-          if jSub > N-1 then
+          if jSub > N - 1 then
           begin
             jSub := 1;
             Inc(iSub);
@@ -167,7 +191,7 @@ type
         end;
       end;
     end;
-    Result := submatriz_;
+    submatriz := submatriz_;
   end;
 
   function matrizTranspuesta(A: TMatriz): TMatriz;
@@ -184,7 +208,7 @@ type
         transpuesta[i, j] := A[j, i];
       end;
     end;
-    Result := transpuesta;
+    matrizTranspuesta := transpuesta;
   end;
 
   function matrizAdjunta(A: TMatriz): TMatriz;
@@ -204,7 +228,7 @@ type
         cofactores[i, j] := signo * determinante2x2(submatriz_);
       end;
     end;
-    Result := cofactores;
+    matrizAdjunta := cofactores;
   end;
 
   function matrizInversa(A: TMatriz; determinante: double): TMatriz;
@@ -215,6 +239,7 @@ type
     inversa: TMatriz;
     i, j: integer;
   begin
+    iniciarMatriz(inversa);
     inversa := matrizAdjunta(A);
     inversa := matrizTranspuesta(inversa);
     for i := 1 to N do
@@ -224,7 +249,7 @@ type
         inversa[i, j] := 1 / determinante * inversa[i, j];
       end;
     end;
-    Result := inversa;
+    matrizInversa := inversa;
   end;
 
   procedure pedirDatos(var x: double; msg: string);
@@ -271,16 +296,7 @@ type
         producto[i, j] := suma;
       end;
 
-    Result := producto;
-  end;
-
-  procedure inicializarVector(var b: TVector);
-  { Inicializa el vector en ceros. }
-  var
-    i: integer;
-  begin
-    for i := 1 to N do
-      b[i] := 0;
+    productoMatriz := producto;
   end;
 
   function solucion(var c: TVector; invL, invU: TMatriz; b: TVector): TVector;
@@ -299,7 +315,7 @@ type
     end;
 
     // Computamos el vector x.
-    inicializarVector(x);
+    iniciarVector(x);
     for i := 1 to N do
     begin
       for j := 1 to N do
@@ -307,7 +323,7 @@ type
         x[i] := x[i] + invU[i, j] * c[j];
       end;
     end;
-    Result := x;
+    solucion := x;
   end;
 
   procedure principal(var salir: boolean);
@@ -321,6 +337,13 @@ type
     determinante_, determinanteL: double;
     respuesta: string;
   begin
+    // Inicializamos las variables.
+    iniciarMatriz(A);
+    iniciarMatriz(L);
+    iniciarMatriz(U);
+    iniciarVector(b);
+    iniciarVector(c);
+
     llenarSistema(A, b);
     mostrarSistema(A, b);
     factorizar(A, L, U);
@@ -352,6 +375,7 @@ var
   salir: boolean;
 begin { Main }
   salir := False;
+  WriteLn('-- Doolittle, por Umbral1013 --');
   WriteLn('Este programa soluciona sistemas de ecuaciones. Bienvenido.');
   while not salir do principal(salir);
   WriteLn('Hasta pronto!');
